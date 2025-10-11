@@ -1,0 +1,48 @@
+{% extends "videos/base.html" %}
+{% block content %}
+<h2>All videos</h2>
+
+<form method="get" class="grid-2" style="margin-bottom:1rem">
+  <input type="search" name="q" value="{{ q }}" placeholder="Search title, director, or actors">
+  <div>
+    <button type="submit">Search</button>
+    {% if q %}<a href="{% url 'video-list' %}" role="button" class="secondary">Clear</a>{% endif %}
+  </div>
+</form>
+
+{% if videos %}
+<table role="grid">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Director</th>
+      <th>Genre</th>
+      <th>Year</th>
+      <th style="width:160px"></th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for v in videos %}
+    <tr>
+      <td>
+        <a href="{% url 'video-detail' v.pk %}">{{ v.movie_title }}</a>
+      </td>
+      <td>{{ v.director_name }}</td>
+      <td><span class="pill">{{ v.get_movie_genre_display }}</span></td>
+      <td>{{ v.release_year }}</td>
+      <td class="actions">
+        <a href="{% url 'video-update' v.pk %}" role="button" class="secondary">Edit</a>
+        <a href="{% url 'video-delete' v.pk %}" role="button" class="contrast">Delete</a>
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% else %}
+<article class="secondary">
+  <header><strong>No videos yet</strong></header>
+  <p>Add your first one to test create, update, and delete.</p>
+  <footer><a href="{% url 'video-create' %}" role="button">Add new video</a></footer>
+</article>
+{% endif %}
+{% endblock %}

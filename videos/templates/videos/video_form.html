@@ -1,0 +1,19 @@
+{% extends "videos/base.html" %}
+{% block content %}
+<h2>{{ mode|default:"Save" }} video</h2>
+<form method="post" novalidate>
+  {% csrf_token %}
+  <div class="grid" style="grid-template-columns:1fr 1fr;gap:1rem">
+    {{ form.movie_title.as_field_group }}
+    {{ form.director_name.as_field_group }}
+    {{ form.actor1_name.as_field_group }}
+    {{ form.actor2_name.as_field_group }}
+    {{ form.movie_genre.as_field_group }}
+    {{ form.release_year.as_field_group }}
+  </div>
+  <div style="margin-top:1rem">
+    <button type="submit">Save</button>
+    <a href="{% url 'video-list' %}" role="button" class="secondary">Cancel</a>
+  </div>
+</form>
+{% endblock %}

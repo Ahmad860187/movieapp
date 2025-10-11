@@ -1,0 +1,23 @@
+{% extends "videos/base.html" %}
+{% block content %}
+<h2 style="margin-bottom:.25rem">{{ video.movie_title }}</h2>
+<p style="margin-top:0;color:var(--muted-color)">{{ video.release_year }} • <span class="pill">{{ video.get_movie_genre_display }}</span></p>
+
+<div class="grid" style="grid-template-columns:1fr 1fr;gap:1.25rem">
+  <article>
+    <header><strong>Credits</strong></header>
+    <ul>
+      <li><strong>Director</strong>: {{ video.director_name }}</li>
+      <li><strong>Actor 1</strong>: {{ video.actor1_name }}</li>
+      <li><strong>Actor 2</strong>: {{ video.actor2_name|default:"N/A" }}</li>
+      <li><strong>MovieID</strong>: {{ video.movie_id }}</li>
+    </ul>
+  </article>
+</div>
+
+<p class="actions" style="margin-top:1rem">
+  <a href="{% url 'video-update' video.pk %}" role="button">Edit</a>
+  <a href="{% url 'video-delete' video.pk %}" role="button" class="contrast">Delete</a>
+  <a href="{% url 'video-list' %}" role="button" class="secondary">Back</a>
+</p>
+{% endblock %}

@@ -1,0 +1,14 @@
+{% extends "videos/base.html" %}
+{% block content %}
+<article class="contrast">
+  <header><strong>Delete video</strong></header>
+  <p>Really delete “{{ video.movie_title }}” ({{ video.release_year }})? This cannot be undone.</p>
+  <footer>
+    <form method="post" style="display:inline">
+      {% csrf_token %}
+      <button type="submit" class="contrast">Yes, delete</button>
+    </form>
+    <a href="{% url 'video-detail' video.pk %}" role="button" class="secondary">No, go back</a>
+  </footer>
+</article>
+{% endblock %}
