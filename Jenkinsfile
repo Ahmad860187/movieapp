@@ -1,28 +1,33 @@
 pipeline {
   agent any
-  triggers {
-    pollSCM('H/2 * * * *')
-  }
+  options { skipDefaultCheckout() }
+
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/Ahmad860187/movieapp.git'
+        git url: 'https://github.com/Ahmad860187/movieapp.git',
+            branch: 'master',
+            changelog: false,
+            poll: false
       }
     }
+
     stage('Build in Minikube Docker') {
       steps {
         bat '''
-        call minikube docker-env --shell=cmd > docker_env.bat
-        call docker_env.bat
-        docker build -t videostore:latest .
+        minikube docker-env > tmp_env.bat
+        call tmp_env.bat
+        docker build -t mydjangoapp:latest .
         '''
       }
     }
+
     stage('Deploy to Minikube') {
       steps {
         bat '''
         kubectl apply -f deployment.yaml
-        kubectl rollout status deployment/videostore-deployment
+        kubectl apply -f service.yaml
+        kubectl rollout status deployment/mydjangoapp
         '''
       }
     }
