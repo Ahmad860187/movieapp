@@ -1,0 +1,43 @@
+pipeline {
+  agent any
+
+  stages {
+    stage('Checkout') {
+      steps {
+        cleanWs()
+        git(
+          branch: 'master',
+          url: 'https://github.com/Ahmad860187/movieapp.git'
+        )
+      }
+    }
+
+    stage('Docker sanity') {
+      steps {
+        bat 'docker version'
+        bat 'docker info'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        // If Dockerfile is not at repo root, add the subfolder path after the dot
+        bat 'docker build -t movieapp:latest .'
+      }
+    }
+
+    stage('Stop Old Container') {
+      steps {
+        bat 'docker stop movieapp || exit 0'
+        bat 'docker rm movieapp || exit 0'
+      }
+    }
+
+    stage('Run New Container') {
+      steps {
+        // If your app listens on a different internal port, change the right side
+        bat 'docker run -d --name movieapp -p 8000:8000 movieapp:latest'
+      }
+    }
+  }
+}

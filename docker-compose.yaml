@@ -1,0 +1,22 @@
+version: '3'
+services:
+  movieapp1:
+    build: .
+    environment:
+      - APP_NAME=movieapp1
+    ports:
+      - "8001:8000"
+
+  movieapp2:
+    build: .
+    environment:
+      - APP_NAME=movieapp2
+    ports:
+      - "8002:8000"
+
+  movieapp3:
+    build: .
+    environment:
+      - APP_NAME=movieapp3
+    ports:
+      - "8003:8000"
